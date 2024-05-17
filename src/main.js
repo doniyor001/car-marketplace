@@ -6,6 +6,7 @@ import 'vue-plyr/dist/vue-plyr.css'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import { initializeApp } from "firebase/app";
+// import 'firebase/storage'
 import PrimeVue from 'primevue/config'
 import VuePlyr from 'vue-plyr'
 import '../api'

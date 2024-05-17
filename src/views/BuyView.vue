@@ -1,15 +1,108 @@
+<template>
+  <div class="background">
+    <div class="card navbar">
+      <MegaMenu :model="items" class="p-2 surface-0">
+        <template #start>
+          <Image
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Tesla_T_symbol.svg/800px-Tesla_T_symbol.svg.png"
+            alt="Image"
+            width="50"
+          />
+        </template>
+        <template #item="{ item }">
+          <a
+            v-if="item.root"
+            v-ripple
+            class="flex align-items-center cursor-pointer px-3 py-2 overflow-hidden relative font-semibold text-lg uppercase"
+            style="border-radius: 2rem"
+          >
+            <span class="ml-2">{{ item.label }}</span>
+          </a>
+          <a v-else-if="!item.image" class="flex align-items-center p-1 cursor-pointer mb-2 gap-1">
+            <span class="inline-flex flex-column gap-0">
+              <span class="font-medium text-lg text-700">{{ item.label }}</span>
+            </span>
+          </a>
+          <div v-else @click="cars">
+            <span>{{ item.subtext }}</span>
+            <div class="flex align-items-center gap-3 cursor-pointer">
+              <img alt="megamenu-demo" :src="item.image" class="h-12 w-8" />
+            </div>
+          </div>
+        </template>
+        <template #end>
+          <Button
+            style="position: relative; left: 630px; top: 0px; height: 40px; width: 80px"
+            @click="logout"
+            label="Logout"
+            class="mr-2 bgColor"
+          />
+          <Avatar
+            style="position: relative; left: 650px"
+            image="https://primefaces.org/cdn/primevue/images/avatar/amyelsner.png"
+            shape="circle"
+          />
+        </template>
+      </MegaMenu>
+
+      <div>
+        <form class="flex flex-column gap-2" style="margin-left: 28%; padding: 100px">
+          <h2 style="color: azure">Purchasing Process</h2>
+          <div class="p-inputgroup flex-1 w-25rem">
+            <InputText type="text" v-model="email" placeholder="Name"></InputText>
+          </div>
+          <div class="p-inputgroup flex-1 w-25rem">
+            <InputText type="text" v-model="password" placeholder="Surname"></InputText>
+          </div>
+          <div class="p-inputgroup flex-1 w-25rem">
+            <InputText type="number" v-model="password" placeholder="Card Number"></InputText>
+          </div>
+          <div class="p-inputgroup flex-1 w-25rem">
+            <InputNumber v-model="value4" placeholder="Cvv" inputId="minmax" :min="0" :max="100" />
+          </div>
+          <div class="p-inputgroup flex-1 w-25rem">
+            <InputNumber
+              v-model="value4"
+              placeholder="Passport ID"
+              inputId="minmax"
+              :min="0"
+              :max="100"
+            />
+          </div>
+          <div class="p-inputgroup flex-1 w-25rem">
+            <InputNumber
+              v-model="value4"
+              placeholder="Phone number"
+              inputId="minmax"
+              :min="0"
+              :max="100"
+            />
+          </div>
+          <Button @click="buy" label="Order" class="w-25rem bgColor" />
+        </form>
+      </div>
+    </div>
+  </div>
+</template>
+
 <script setup>
 import { ref } from 'vue'
-import { useRouter } from 'vue-router'
-
 import Button from 'primevue/button'
 import MegaMenu from 'primevue/megamenu'
 import Avatar from 'primevue/avatar'
 import Image from 'primevue/image'
+import InputText from 'primevue/inputtext'
+import InputNumber from 'primevue/inputnumber'
 
+import { useAuthStore } from '../stores/auth'
+import { useRouter } from 'vue-router'
+
+const authStore = useAuthStore()
 const router = useRouter()
 
-const login = () => {
+const logout = () => {
+  authStore.logout()
+  localStorage.removeItem('userTokens')
   router.push('/signin')
 }
 
@@ -204,70 +297,13 @@ const items = ref([
     ]
   }
 ])
+
+const cars = () => {
+  router.push('/cars')
+}
 </script>
 
-<template>
-  <div class="card navbar">
-    <MegaMenu :model="items" class="p-2 surface-0">
-      <template #start>
-        <Image
-          src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Tesla_T_symbol.svg/800px-Tesla_T_symbol.svg.png"
-          alt="Image"
-          width="60"
-        />
-      </template>
-      <template #item="{ item }">
-        <a
-          v-if="item.root"
-          v-ripple
-          class="flex align-items-center cursor-pointer px-3 py-2 overflow-hidden relative font-semibold text-lg uppercase"
-          style="border-radius: 2rem"
-        >
-          <span class="ml-2">{{ item.label }}</span>
-        </a>
-        <a v-else-if="!item.image" class="flex align-items-center p-1 cursor-pointer mb-2 gap-1">
-          <span class="inline-flex flex-column gap-0">
-            <span class="font-medium text-lg text-700">{{ item.label }}</span>
-          </span>
-        </a>
-        <div v-else @click="login">
-          <span>{{ item.subtext }}</span>
-          <div class="flex align-items-center gap-3 cursor-pointer">
-            <img alt="megamenu-demo" :src="item.image" class="h-12 w-8" />
-          </div>
-        </div>
-      </template>
-      <template #end>
-        <Button
-          @click="login"
-          style="position: relative; left: 630px; top: 0px; height: 40px; width: 80px"
-          label="Login"
-          class="mr-2 bgColor"
-        />
-        <Avatar
-          style="position: relative; left: 630px"
-          image="https://primefaces.org/cdn/primevue/images/avatar/amyelsner.png"
-          shape="circle"
-        />
-      </template>
-    </MegaMenu>
-  </div>
-  <div class="video-wrapper">
-    <vue-plyr>
-      <div
-        data-plyr-provider="youtube"
-        data-plyr-embed-id="https://www.youtube.com/watch?v=krQKnhMwxn4"
-      ></div>
-    </vue-plyr>
-  </div>
-</template>
-
 <style scoped>
-.video-wrapper {
-  height: 60%;
-  width: 100%;
-}
-
 .navbar {
   position: fixed;
   top: 0;
@@ -277,11 +313,27 @@ const items = ref([
   z-index: 1000;
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
 }
-
+.myCard {
+  width: 23%;
+  border: 5rem;
+  border-radius: 2rem;
+  box-shadow: 15px 15px 15px rgba(0, 0, 0, 0.15);
+}
+.myCard img {
+  width: 100%;
+  border-radius: 2rem;
+}
 .bgColor {
   background-color: rgb(187, 30, 30);
 }
 .p-button {
   border: 1px solid #b91010;
+}
+.background {
+  background: url('https://avatars.mds.yandex.net/get-vertis-journal/3934100/tesla-cybertruck_10.jpg_1701383344938/orig')
+    center center no-repeat;
+  background-size: cover;
+  min-height: 100vh;
+  margin: 0;
 }
 </style>

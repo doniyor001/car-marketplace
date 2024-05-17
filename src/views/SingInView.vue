@@ -29,9 +29,9 @@ const signup = () => {
 </script>
 
 <template>
-  <div class="background h-screen w-full">
+  <div class="background h-full w-full">
     <Message v-if="authStore.error" severity="warn">{{ authStore.error }}</Message>
-    <form class="flex flex-column gap-2" style="margin-left: 450px">
+    <form class="flex flex-column gap-2" style="margin-left: 29%; padding: 130px">
       <h2 style="color: azure">SignIn</h2>
       <div class="p-inputgroup flex-1 w-15rem">
         <span class="p-inputgroup-addon">
@@ -46,10 +46,10 @@ const signup = () => {
         <InputText type="password" v-model="password" placeholder="Password"></InputText>
       </div>
       <Loader v-if="authStore.loader" />
-      <div v-else class="flex flex-column gap-2 w-15rem">
-        <Button label="Signin" @click="signin"></Button>
-        <Button label="Signup" @click="signup"></Button>
-        <Button label="Back Home" @click="back"></Button>
+      <div v-else class="flex flex-column gap-2 w-15rem h-16rem" style="height: 10rem;">
+        <Button class="bgColor" label="Signin" @click="signin"></Button>
+        <Button class="bgColor" label="Signup" @click="signup"></Button>
+        <Button class="bgColor" label="Back Home" @click="back"></Button>
       </div>
     </form>
   </div>
@@ -57,6 +57,17 @@ const signup = () => {
 
 <style scoped>
 .background {
-  background-image: url('https://www.teslarati.com/wp-content/uploads/2023/08/tesla-model-s-red-e1692063874544-1024x665.jpeg');
+  background: url('https://repost.uz/storage/uploads/23-1663901982-avto11-post-material.jpeg')
+    center center no-repeat;
+  background-size: cover;
+  overflow: hidden;
+  margin: 0;
+  min-height: 100vh;
+}
+.bgColor {
+  background-color: rgb(187, 30, 30);
+}
+.p-button {
+  border: 1px solid #b91010;
 }
 </style>
